@@ -2,16 +2,13 @@ package com.example.nikita.myplayer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +25,7 @@ public class PlayerActivity extends AppCompatActivity {
     private TextView textViewPath;
     private SeekBar timeBar;
     private TextView textViewCurrTime;
+    private TextView textViewDurTime;
 
     private String audioFilePath = "/storage/7F2A-1905/Music/am_oyb.mp3"; //это временно
     private ProgressChangeTask progressTask; //AsyncTask, отслеживающий прогресс трека
@@ -68,8 +66,14 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
-        // Текстовое поле время:  Текстовое поле с текущем временем устанавливаем в 0
+        // Текстовое поле время:  текущее и общее время трека
         textViewCurrTime = (TextView) findViewById(R.id.activity_player_currtime_text);
+        textViewDurTime = (TextView) findViewById(R.id.activity_player_durtime_text);
+        if(AudioPlayer.isCreated()){
+            textViewDurTime.setText(millisecToTime(AudioPlayer.getDuration()));
+        } else {
+            textViewDurTime.setText(millisecToTime(0));
+        }
 
 
         playButton = (ImageButton) findViewById(R.id.activity_player_play_button);
@@ -142,6 +146,9 @@ public class PlayerActivity extends AppCompatActivity {
             }
         }
 
+        //обновляет общую длину трека
+        textViewDurTime.setText(millisecToTime(AudioPlayer.getDuration()));
+
         //Создание AsyncTask обновляющего timeBar и textViewCurrTime
         createProgressTask();
         progressTask.execute(AudioPlayer.getPlayer());
@@ -174,18 +181,12 @@ public class PlayerActivity extends AppCompatActivity {
     //Устанавливает текущее время в TextView textViewCurrTime
     public void updateTimeText() {
         if (AudioPlayer.isCreated()) {
-            String time = String.format(Locale.US,                      //Студия говорит, что надо ставить
-                    "%02d:%02d:%02d",                                   //Locale чтобы избежать багов. ОК
-                    AudioPlayer.getCurrentPosition() / (3600 * 1000),
-                    (AudioPlayer.getCurrentPosition() / (60 * 1000)) % 60,
-                    (AudioPlayer.getCurrentPosition() / (1000) % 60));
-
+            String time = millisecToTime(AudioPlayer.getCurrentPosition());
             textViewCurrTime.setText(time);
-
             //Log.i(TAG, "Time: " + time);
 
         } else {
-            textViewCurrTime.setText(String.format(Locale.US, "%02d:%02d:%02d", 0, 0, 0));
+            textViewCurrTime.setText(millisecToTime(0));
         }
 
     }
@@ -204,6 +205,15 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
+
+    //Перевод миллисекунд в формат hh:mm:ss
+    private String millisecToTime(int millisec){
+        return String.format(Locale.US,                      //Студия говорит, что надо ставить
+                "%02d:%02d:%02d",                                   //Locale чтобы избежать багов. ОК
+                millisec / (3600 * 1000),
+                (millisec / (60 * 1000)) % 60,
+                (millisec / (1000) % 60));
+    }
 
     /*
     Ниже кривая реализаця файлового менеджера,
@@ -232,11 +242,12 @@ public class PlayerActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri uri = data.getData();
                     audioFilePath = uri.getPath();
-                    Log.i(TAG, "File path: " + audioFilePath);
-                    textViewPath.setText(audioFilePath);
 
                     updateTimeText();
                     updateTimeBarProgress();
+
+                    Log.i(TAG, "File path: " + audioFilePath);
+                    textViewPath.setText(audioFilePath);
                 }
                 break;
             }
