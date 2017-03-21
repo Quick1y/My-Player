@@ -1,12 +1,9 @@
 package com.example.nikita.myplayer;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -18,7 +15,8 @@ import java.util.Locale;
 
 public class PlayerActivity extends AppCompatActivity {
     private final static String TAG = "PlayerActivity";
-    private final int FILE_CHOOSER_CODE = 1;
+
+    private final static String PATH_KEY = "path";
 
     private ImageButton playButton;
     private ImageButton pauseButton;
@@ -27,21 +25,32 @@ public class PlayerActivity extends AppCompatActivity {
     private TextView textViewCurrTime;
     private TextView textViewDurTime;
 
-    private String audioFilePath = "/storage/7F2A-1905/Music/am_oyb.mp3"; //это временно
+    private String audioFilePath;
     private ProgressChangeTask progressTask; //AsyncTask, отслеживающий прогресс трека
     private boolean canUpdateTimeBar = true; // false при перетаскивании ползунка
+
+
+    public static Intent newIntent(Context packageContext , String path){
+        Intent intent = new Intent(packageContext, PlayerActivity.class);
+        intent.putExtra(PATH_KEY, path);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        // Разрешения:  MediaPlayer требует (но молчит) запросить разрешения, иначе выкидывает IOException
-        if (Build.VERSION.SDK_INT >= 23) {
-            requestPermissions(new String[]{"android.permission.READ_EXTERNAL_STORAGE"}, 1); //request code заменить, естественно
+        Intent intent = getIntent();
+
+        if(intent != null){
+            audioFilePath = intent.getStringExtra(PATH_KEY);
+        } else {
+            return;
         }
 
-        // Создание плеера:  плеер нужно создавать сразу, и, возможно, в AsyncTask  !!!
+
+        // Создание плеера:  плеер нужно создавать сразу  !!!
         try {
             AudioPlayer.create(audioFilePath);
         } catch (IOException e) {
@@ -54,17 +63,7 @@ public class PlayerActivity extends AppCompatActivity {
         textViewPath = (TextView) findViewById(R.id.activity_player_path_text);
         String textAudioPath = "Path: " + audioFilePath;
         textViewPath.setText(textAudioPath);
-        //небольшой эксперимент с файловым менеджером
-        textViewPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (progressTask != null) {
-                    progressTask.stop();
-                }
-                AudioPlayer.destroy();
-                showChooser();
-            }
-        });
+
 
         // Текстовое поле время:  текущее и общее время трека
         textViewCurrTime = (TextView) findViewById(R.id.activity_player_currtime_text);
@@ -118,6 +117,13 @@ public class PlayerActivity extends AppCompatActivity {
 
         updateTimeText();
         updateTimeBarProgress();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        progressTask.stop();
+        AudioPlayer.destroy();
     }
 
 
@@ -213,48 +219,6 @@ public class PlayerActivity extends AppCompatActivity {
                 millisec / (3600 * 1000),
                 (millisec / (60 * 1000)) % 60,
                 (millisec / (1000) % 60));
-    }
-
-    /*
-    Ниже кривая реализаця файлового менеджера,
-    но она работает (-_-)
-     */
-    private void showChooser() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        try {
-            startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_CHOOSER_CODE);
-        } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(this, "Please install a File Manager.",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case FILE_CHOOSER_CODE: {
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri uri = data.getData();
-                    audioFilePath = uri.getPath();
-
-                    updateTimeText();
-                    updateTimeBarProgress();
-
-                    Log.i(TAG, "File path: " + audioFilePath);
-                    textViewPath.setText(audioFilePath);
-                }
-                break;
-            }
-
-            default:
-                break;
-        }
     }
 
 }
