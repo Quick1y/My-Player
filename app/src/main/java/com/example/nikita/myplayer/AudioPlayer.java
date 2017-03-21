@@ -67,6 +67,10 @@ public class AudioPlayer {
     }
 
 
+    public static boolean isPlaying(){
+        return player.isPlaying();
+    }
+
     public static MediaPlayer getPlayer() {
         return player;
     }

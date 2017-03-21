@@ -24,7 +24,7 @@ public class TrackListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_track_list);
 
         // Разрешения:  MediaPlayer требует (но молчит) запросить разрешения, иначе выкидывает IOException
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{"android.permission.READ_EXTERNAL_STORAGE"}, 1); //request code заменить, естественно
         }
 

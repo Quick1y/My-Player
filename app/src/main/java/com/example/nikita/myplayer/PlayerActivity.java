@@ -1,8 +1,9 @@
 package com.example.nikita.myplayer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,14 +14,14 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.Locale;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends Activity {
     private final static String TAG = "PlayerActivity";
 
     private final static String PATH_KEY = "path";
 
     private ImageButton playButton;
-    private ImageButton pauseButton;
-    private TextView textViewPath;
+    private TextView textViewTrackName;
+    private TextView textViewAlbumName;
     private SeekBar timeBar;
     private TextView textViewCurrTime;
     private TextView textViewDurTime;
@@ -59,10 +60,14 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
 
-        // Путь к файлу:  Устанавливает в TextView путь к файлу
-        textViewPath = (TextView) findViewById(R.id.activity_player_path_text);
-        String textAudioPath = "Path: " + audioFilePath;
-        textViewPath.setText(textAudioPath);
+        // Название трека:  Пока устанавливает в TextView путь к файлу
+        textViewTrackName = (TextView) findViewById(R.id.activity_player_trackName_text);
+        String name = audioFilePath;
+        textViewTrackName.setText(name);
+
+        // Название альбома
+        textViewAlbumName = (TextView) findViewById(R.id.activity_player_albumName_text);
+        textViewAlbumName.setText("Неизвестный альбом"); // Пока неизвестный
 
 
         // Текстовое поле время:  текущее и общее время трека
@@ -75,19 +80,31 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
 
+        // Кнопка play / pause
         playButton = (ImageButton) findViewById(R.id.activity_player_play_button);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPlayClicked();
-            }
-        });
+                if(AudioPlayer.isPlaying()){
+                    onPauseClicked();
 
-        pauseButton = (ImageButton) findViewById(R.id.activity_player_stop_button);
-        pauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPauseClicked();
+                    //смена иконки на play
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow, getTheme()));
+                    } else {
+                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow));
+                    }
+
+                } else {
+                    onPlayClicked();
+
+                    //смена иконки на pause
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause, getTheme()));
+                    } else {
+                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
+                    }
+                }
             }
         });
 
@@ -122,8 +139,10 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        progressTask.stop();
-        AudioPlayer.destroy();
+        if(AudioPlayer.isCreated()){
+            progressTask.stop();
+            AudioPlayer.destroy();
+        }
     }
 
 
