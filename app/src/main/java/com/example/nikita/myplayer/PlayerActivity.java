@@ -3,6 +3,8 @@ package com.example.nikita.myplayer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -87,23 +89,8 @@ public class PlayerActivity extends Activity {
             public void onClick(View v) {
                 if(AudioPlayer.isPlaying()){
                     onPauseClicked();
-
-                    //смена иконки на play
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow, getTheme()));
-                    } else {
-                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow));
-                    }
-
                 } else {
                     onPlayClicked();
-
-                    //смена иконки на pause
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause, getTheme()));
-                    } else {
-                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
-                    }
                 }
             }
         });
@@ -134,6 +121,7 @@ public class PlayerActivity extends Activity {
 
         updateTimeText();
         updateTimeBarProgress();
+        onPlayClicked();
     }
 
     @Override
@@ -177,6 +165,21 @@ public class PlayerActivity extends Activity {
         //Создание AsyncTask обновляющего timeBar и textViewCurrTime
         createProgressTask();
         progressTask.execute(AudioPlayer.getPlayer());
+
+
+        //Анимация ниже:
+        //смена иконки на pause
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            //анимация
+            playButton.setImageDrawable(getResources()
+                    .getDrawable(R.drawable.anim_play_pause, getTheme()));
+            Drawable drawable = playButton.getDrawable();
+            if (drawable instanceof Animatable){
+                ((Animatable) drawable).start();
+            }
+        } else {
+            playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
+        }
     }
 
     //вызывается при клике на Кнопку Стоп
@@ -185,6 +188,21 @@ public class PlayerActivity extends Activity {
             AudioPlayer.pause();
         } catch (PlayerNotCreateException e) {
             e.printStackTrace();
+            return;
+        }
+
+        //Анимация ниже:
+        //смена иконки на play
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            //анимация
+            playButton.setImageDrawable(getResources()
+                    .getDrawable(R.drawable.anim_pause_play, getTheme()));
+            Drawable drawable = playButton.getDrawable();
+            if (drawable instanceof Animatable){
+                ((Animatable) drawable).start();
+            }
+        } else {
+            playButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow));
         }
     }
 

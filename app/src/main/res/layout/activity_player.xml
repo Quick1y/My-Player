@@ -109,7 +109,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_play_arrow"/>
+                tools:src="@drawable/ic_pause"/>
 
             <ImageButton
                 android:id="@+id/activity_player_next_button"
