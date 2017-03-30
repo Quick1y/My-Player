@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -44,6 +45,9 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
+        //Установка темы
+        setTheme(R.style.PlayerActivityTheme_orange);
+
         Intent intent = getIntent();
 
         if(intent != null){
@@ -64,7 +68,7 @@ public class PlayerActivity extends Activity {
 
         // Название трека:  Пока устанавливает в TextView путь к файлу
         textViewTrackName = (TextView) findViewById(R.id.activity_player_trackName_text);
-        String name = audioFilePath;
+        String name = new File(audioFilePath).getName();
         textViewTrackName.setText(name);
 
         // Название альбома
@@ -122,6 +126,8 @@ public class PlayerActivity extends Activity {
         updateTimeText();
         updateTimeBarProgress();
         onPlayClicked();
+
+        ;
     }
 
     @Override
@@ -257,6 +263,5 @@ public class PlayerActivity extends Activity {
                 (millisec / (60 * 1000)) % 60,
                 (millisec / (1000) % 60));
     }
-
 }
 

@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_track_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.nikita.myplayer.TrackListActivity"
+    android:orientation="vertical">
 
-    android:text="PRESS ME"
-    android:gravity="center_horizontal|center_vertical"
-    android:textSize="20pt"
-    android:id="@+id/press_me">
+    <FrameLayout
+        android:id="@+id/frame_list_act_track_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-</TextView>
+    <FrameLayout
+        android:id="@+id/frame_preview_act_track_list"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Тут кое-что будет, но потом"/>
+
+    </FrameLayout>
+
+</LinearLayout>
+

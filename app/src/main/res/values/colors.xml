@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="actionBar">#212121</color>
+    <color name="actionBar">#ef6c00</color>
     <color name="primaryBackground">#fafafa</color>
     <color name="additionalBackground">#616161</color>
-    <color name="notificationBar">#000000</color>
+    <color name="notificationBarDark">#000000</color>
+    <color name="notificationBar">#e65100</color>
     <color name="colorAccent">#ff9800</color>
 </resources>
