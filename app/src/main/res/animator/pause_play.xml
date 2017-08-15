@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:name="play"
+        android:propertyName="fillAlpha"
+        android:duration="150"
+        android:valueFrom="0"
+        android:valueTo="1"
+        android:valueType="floatType"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+
+    <objectAnimator
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:name="play"
+        android:propertyName="pathData"
+        android:duration="150"
+        android:valueFrom="M4,0v22l19,-11z"
+        android:valueTo="M8,5v14l11,-7z"
+        android:valueType="pathType"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+
+</set>

@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">My Player</string>
+
+    <!-- FileManager -->
+    <string name="file_manager_label">Импорт треков</string>
+    <string name="fm_menu_close">Закрыть</string>
+    <string name="fm_button_back">Назад</string>
+    <string name="fm_subtitle_choose_device">Выберите устройство</string>
+
+    <string name="fm_toast_file_not_support">Файлы этого формата не поддерживаются!</string>
+    <string name="fm_toast_select_file">Сначала выберите папку!</string>
+
+    <string name="fm_alert_description">Импортировать треки из папки \"%s\"?</string>
+    <string name="fm_alert_title">Импорт</string>
+    <string name="fm_alert_cb_with_inner">Включая вложенные папки</string>
+
+
+    <!-- TrackListActivity -->
+    <string name="tl_need_permission">Для работы приложения необходимо предоставить разрешение
+        на использование памяти.</string>
+
+    <!-- PlayerActivity -->
+    <string name="pa_seek_forward">+%s сек.</string>
+    <string name="pa_seek_back">-%s сек.</string>
+
+
 </resources>

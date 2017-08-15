@@ -1,4 +1,4 @@
-package com.example.nikita.myplayer;
+package com.example.nikita.myplayer.Utils;
 
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -11,7 +11,7 @@ AsyncTask, реализующий обновление ProgressBar timeBar
 и TextView textViewCurrTime в PlayerActivity.java
 */
 
-class ProgressChangeTask extends AsyncTask<MediaPlayer, Integer,Void> {
+public class ProgressChangeTask extends AsyncTask<MediaPlayer, Integer,Void> {
 
     private static final String TAG = "PlayerTask";
     private ArrayList<OnProgressChangeListener> listenersList = new ArrayList<>();

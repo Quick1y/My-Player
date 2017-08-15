@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="actionBar">#ef6c00</color>
-    <color name="primaryBackground">#fafafa</color>
-    <color name="additionalBackground">#616161</color>
+    <color name="alpha_0">#00000000</color>
+    <color name="colorAccent">#e65100</color>
+    <color name="colorAccentLight">#ffffff</color>
+
+    <color name="textLight">#eee</color>
+    <color name="textLight_op">#ddeeeeee</color>
+
+
     <color name="notificationBarDark">#000000</color>
     <color name="notificationBar">#e65100</color>
-    <color name="colorAccent">#ff9800</color>
+
+    <color name="background">#fafafa</color>
+    <color name="backgroundDark">#333</color>
+    <!--color name="background_d">#44000000</color-->
+    <color name="background_d">#99000000</color>
+
+
+
 </resources>

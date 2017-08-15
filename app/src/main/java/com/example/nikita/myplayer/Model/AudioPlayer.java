@@ -1,4 +1,4 @@
-package com.example.nikita.myplayer;
+package com.example.nikita.myplayer.Model;
 
 
 import android.media.MediaPlayer;
@@ -17,6 +17,11 @@ public class AudioPlayer {
 
     public static void create(String source) throws IOException {
         //Методы ЖЦ MediaPlayer описаны на developer.android.com
+
+        if(source == null){
+            throw new IOException("source is null");
+        }
+
         player = new MediaPlayer();
         player.reset();
         player.setDataSource(source);
@@ -31,6 +36,13 @@ public class AudioPlayer {
             player.release();
             player = null;
         }
+    }
+
+
+    //Устанавливает указанное время
+    public static void setCurrTime(int time){
+        player.seekTo(time);
+        Log.i(TAG, "Seek to " + time + "ms");
     }
 
     //Устанавливает прогресс в выбранную позицию
@@ -83,7 +95,7 @@ public class AudioPlayer {
         return player.getDuration();
     }
 
-    public static int getCurrentPosition() {
+    public static int getCurrTime() {
         return player.getCurrentPosition();
     }
 }

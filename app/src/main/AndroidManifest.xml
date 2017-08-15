@@ -3,6 +3,7 @@
     package="com.example.nikita.myplayer">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/CommonTheme_orange">
         <activity
-            android:name=".PlayerActivity"
-            android:theme="@style/PlayerActivityTheme_orange" />
+            android:name=".UI.PlayerActivity"
+            android:theme="@style/PlayerActivityTheme_orange">
+        </activity>
 
-        <activity android:name=".TrackListActivity">
+        <activity android:name=".UI.TrackListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +25,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FileManagerActivity"/>
+        <activity android:name=".UI.FileManagerActivity"
+            android:label="@string/file_manager_label"/>
+
     </application>
 
 </manifest>

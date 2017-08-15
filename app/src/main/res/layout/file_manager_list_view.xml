@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="6dp">
+
+  <ImageView
+      android:id="@+id/fm_listview_image"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      tools:src="@drawable/ic_folder"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fm_listview_track_name"
+        tools:text="Какой-нибудь файл"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:maxLines="2">
+    </TextView>
+
+
+
+</LinearLayout>
+
