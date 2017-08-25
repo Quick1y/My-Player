@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.nikita.myplayer.UI.WelcomeFragment">
+
+    <include android:id="@+id/actionbar"
+        layout="@layout/action_bar_home_activity"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wf_explanation_title"
+        android:textSize="@dimen/wf_textsize_title"
+        android:gravity="bottom|center_horizontal"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/actionbar"
+        android:layout_above="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/wf_explanation_text"
+        android:textSize="@dimen/wf_textsize_text"
+        android:gravity="center"
+        android:layout_above="@+id/wf_import_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/wf_import_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wf_import_button"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

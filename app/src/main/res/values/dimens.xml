@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="fm_max_name_length">70</integer>
+    <integer name="fm_max_length_subtitle">22</integer>
 
     <dimen name="alert_textsize">14sp</dimen>
     <dimen name="alert_padding">10dp</dimen>
@@ -11,5 +12,12 @@
     <dimen name="textsize_album_action_bar">14sp</dimen>
     <dimen name="textsize_album_action_bar_land">12sp</dimen>
 
+    <dimen name="textsize_trackname_list">16sp</dimen>
+    <dimen name="textsize_artist_list">14sp</dimen>
+
+
+
+    <dimen name="wf_textsize_title">20sp</dimen>
+    <dimen name="wf_textsize_text">14sp</dimen>
 
 </resources>

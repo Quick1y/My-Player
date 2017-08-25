@@ -26,7 +26,7 @@ public class FileQualifier {
             }
         }
 
-        for (String str : TrackExtension.EXTENSION){
+        for (String str : TrackExtension.EXTENSIONS){
             if(ext.equals(str)) return true;
         }
         return false;

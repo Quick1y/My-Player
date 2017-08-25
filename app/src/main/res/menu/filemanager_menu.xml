@@ -2,7 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/filemanager_menu_ok"
+    <item android:id="@+id/filemanager_menu_another_fm"
+        android:title="@string/fm_button_another_fm"
+        android:icon="@drawable/ic_another_fm"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/filemanager_menu_close"
         android:title="@string/fm_menu_close"
         android:icon="@drawable/ic_fm_close"
         app:showAsAction="always"/>

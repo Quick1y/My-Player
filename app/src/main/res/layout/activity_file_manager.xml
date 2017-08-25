@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        app:srcCompat="@drawable/ic_fm_ok"
+        android:src="@drawable/ic_fm_ok"
         android:background="@color/notificationBar"
         android:layout_gravity="bottom|end"
         android:visibility="gone" />

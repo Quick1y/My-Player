@@ -11,16 +11,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/CommonTheme_orange">
-        <activity
-            android:name=".UI.PlayerActivity"
-            android:theme="@style/PlayerActivityTheme_orange">
-        </activity>
+        android:theme="@style/CommonTheme">
 
-        <activity android:name=".UI.TrackListActivity">
+        <activity android:name=".UI.HomeActivity"
+            android:theme="@style/CommonThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

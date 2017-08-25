@@ -7,5 +7,5 @@ package com.example.nikita.myplayer.Model;
 public class TrackExtension {
     private TrackExtension(){}
 
-    public static final String[] EXTENSION = {".mp3"};
+    public static final String[] EXTENSIONS = {".mp3"};
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/fltl_list_album_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/background_d"
+        android:layout_margin="6dp"/>
+
+    <TextView
+        android:id="@+id/fltl_list_trackname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/fltl_list_album_image"
+        android:layout_toEndOf="@+id/fltl_list_album_image"
+        android:padding="6dp"
+
+        tools:text="Название трека"
+        android:textColor="@color/textDark"
+        android:maxLines="1"
+        android:textSize="@dimen/textsize_trackname_list"
+        />
+
+    <TextView
+        android:id="@+id/fltl_list_artist"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+
+        tools:text="Исполнитель"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textSize="@dimen/textsize_artist_list"
+        android:layout_alignBottom="@+id/fltl_list_album_image"
+        android:layout_toRightOf="@+id/fltl_list_album_image"
+        android:layout_toEndOf="@+id/fltl_list_album_image" />
+
+    <TextView
+        android:id="@+id/fltl_list_duration"
+
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+
+        tools:text="00:00:00"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="@dimen/textsize_artist_list"
+        android:layout_alignBaseline="@+id/fltl_list_artist"
+        android:layout_alignBottom="@+id/fltl_list_artist"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+
+        android:layout_marginStart="66dp"
+        android:layout_marginLeft="66dp"
+
+        android:background="@color/line"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

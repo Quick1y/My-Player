@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="fm_max_name_length">100</integer>
+    <integer name="fm_max_length_subtitle">70</integer>
+
+
+</resources>

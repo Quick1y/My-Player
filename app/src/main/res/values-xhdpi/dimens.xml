@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="fm_max_name_length">70</integer>
+
+    <dimen name="alert_textsize">14sp</dimen>
+    <dimen name="alert_padding">10dp</dimen>
+
+    <dimen name="textsize_trackname_action_bar">18sp</dimen>
+    <dimen name="textsize_trackname_action_bar_land">16sp</dimen>
+
+    <dimen name="textsize_album_action_bar">14sp</dimen>
+    <dimen name="textsize_album_action_bar_land">12sp</dimen>
+
+
+</resources>

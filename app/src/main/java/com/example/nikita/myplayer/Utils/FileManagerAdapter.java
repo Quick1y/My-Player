@@ -19,13 +19,18 @@ import java.util.ArrayList;
 
 public class FileManagerAdapter extends BaseAdapter {
     private static final String TAG = "FileManagerAdapter";
-    private static int mMaxNameLength;
+
+    public static final int SHOW_BACK = 1;
+    public static final int SHOW_NOTHING = 2;
+
+    private int mMaxNameLength;
+    private int mShowFirst;
 
     private ArrayList<File> mItemList;
     private LayoutInflater mInflater;
 
 
-    public FileManagerAdapter(ArrayList<File> list, LayoutInflater inflater, boolean showBack, int maxNameLength){
+    public FileManagerAdapter(ArrayList<File> list, LayoutInflater inflater, int showFirst, int maxNameLength){
         if(list == null){
             list = new ArrayList<>();
         }
@@ -33,9 +38,10 @@ public class FileManagerAdapter extends BaseAdapter {
         mMaxNameLength = maxNameLength;
         mItemList = list;
         mInflater = inflater;
+        mShowFirst = showFirst;
 
-        //если это корневая директория, то добавляем пустой элемент для кнопки назад
-        if(showBack){
+        //добавляем пустой элемент для кнопки назад или для выбора другого ФМ
+        if(mShowFirst == SHOW_BACK){
             mItemList.add(0, null);
         }
     }
@@ -67,10 +73,17 @@ public class FileManagerAdapter extends BaseAdapter {
         TextView name = (TextView) view.findViewById(R.id.fm_listview_track_name);
         ImageView image = (ImageView) view.findViewById(R.id.fm_listview_image);
 
-        //устанавливаем кнопку назад в первый элемент
+        //устанавливаем кнопку назад или другой ФМ в первый элемент
         if(mItemList.get(i) == null){
-            name.setText(R.string.fm_button_back);
-            image.setImageResource(R.drawable.ic_file_back);
+            switch (mShowFirst) {
+                case SHOW_BACK:
+                    name.setText(R.string.fm_button_back);
+                    image.setImageResource(R.drawable.ic_back);
+                    break;
+
+                default: Log.d(TAG, "Что-то пошло не так в getView. Вызван default");
+            }
+
         } else {
             //устанавливаем имя
             String fileName = mItemList.get(i).getName();

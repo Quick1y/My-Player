@@ -6,6 +6,7 @@
             <solid android:color="#ef6c00" />
             <padding android:left="0dp"
                 android:right="0dp"/>
+            <size android:height="3dp"/>
         </shape>
     </item>
 
@@ -14,6 +15,7 @@
             <shape>
                 <!--solid android:color="#7e7e7e" /-->
                 <solid android:color="#763e20" />
+                <size android:height="3dp"/>
             </shape>
         </clip>
     </item>
@@ -26,6 +28,8 @@
                 <solid android:color="#ef6c00" />
                 <padding android:left="6dp"
                     android:right="6dp"/>
+                <size android:height="3dp"/>
+
             </shape>
         </clip>
     </item>

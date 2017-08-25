@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fm_dialog_root"
+    android:padding="@dimen/alert_padding">
+
+    <TextView
+        android:id="@+id/fm_dialog_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        tools:text="@string/fm_alert_dir_description"
+        android:textSize="@dimen/alert_textsize"
+        android:textColor="@android:color/black"/>
+
+    <CheckBox
+        android:id="@+id/fm_dialog_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/fm_alert_cb_with_inner"/>
+
+</LinearLayout>

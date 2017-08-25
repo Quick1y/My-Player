@@ -23,11 +23,14 @@ import android.widget.Toast;
 import com.example.nikita.myplayer.R;
 import com.example.nikita.myplayer.Utils.FileManagerAdapter;
 import com.example.nikita.myplayer.Utils.FileQualifier;
+import com.example.nikita.myplayer.Utils.StorageHelper;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FileManagerActivity extends AppCompatActivity {
     private static final String TAG = "FileManagerActivity";
@@ -37,7 +40,8 @@ public class FileManagerActivity extends AppCompatActivity {
     private static final String KEY_CHOSEN_DEVICE = "FileManagerActivity.KEY_CHOSEN_DEVICE";
 
     public static final int GET_PATH = 144;
-    public static final int GET_PATH_OK = 180;
+    public static final int GET_PATH_DIR = 180;
+    public static final int GET_PATH_FILE = 181;
     public static final String KEY_STRING = "FileManagerActivity.KEY_STRING";
     public static final String KEY_WITH_INNER = "FileManagerActivity.KEY_WITH_INNER";
 
@@ -52,17 +56,18 @@ public class FileManagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_manager);
-        setTheme(R.style.CommonTheme_orange);
-
 
         mFileListView = (ListView) findViewById(R.id.file_manager_list_view);
         mFileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 File currentFile = (File) adapterView.getItemAtPosition(i);
 
-                if(adapterView.getItemAtPosition(i) == null){ // Если нажат первый элемент и он пуст (Назад), то назад
-                    if(mParentDir.equals(mChosenDevice)){ //если дальше отступать некуда
+                if (adapterView.getItemAtPosition(i) == null) { // Если нажат первый элемент и он пуст
+
+                    if (mParentDir.equals(mChosenDevice)) { //если дальше отступать некуда
                         showFileList(DEFAULT_PATH);
                         hideFab();
                     } else {
@@ -75,8 +80,7 @@ public class FileManagerActivity extends AppCompatActivity {
                     showFileList(currentFile.getPath());
                 } else if (currentFile.isFile()) {
                     if (FileQualifier.isTrack(currentFile)) { //Если это трек, то запускаем плеер (урезанный)
-                        Intent intent = PlayerActivity.newIntent(getBaseContext(), currentFile.getPath());
-                        startActivity(intent);
+                        showImportFileAlertDialog(currentFile);
                     } else {
                         //файл не поддерживается
                         Toast.makeText(getBaseContext(), R.string.fm_toast_file_not_support, Toast.LENGTH_SHORT).show();
@@ -89,14 +93,14 @@ public class FileManagerActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showImportAlertDialog();
+                showImportDirAlertDialog();
             }
         });
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             String path = savedInstanceState.getString(KEY_CURR_PATH);
             String chosenDev = savedInstanceState.getString(KEY_CHOSEN_DEVICE);
-            if(chosenDev != null){
+            if (chosenDev != null) {
                 mChosenDevice = new File(chosenDev);
                 showFab();
             }
@@ -116,22 +120,27 @@ public class FileManagerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.filemanager_menu_ok :
+        switch (item.getItemId()) {
+            case R.id.filemanager_menu_close:
                 finish();
                 return true;
 
-            default: return super.onOptionsItemSelected(item);
+            case R.id.filemanager_menu_another_fm:
+                Toast.makeText(this, "Запускаем другой файловый менеджер", Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         //если мы в корне, то выходим из ФМ; если нет, то в родительскую папку.
-        if (mChosenDevice == null){
+        if (mChosenDevice == null) {
             super.onBackPressed();
         } else {
-            if(mParentDir.equals(mChosenDevice)){
+            if (mParentDir.equals(mChosenDevice)) {
                 showFileList(DEFAULT_PATH);
                 hideFab();
             } else {
@@ -141,8 +150,8 @@ public class FileManagerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState){
-        if(mChosenDevice == null){
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        if (mChosenDevice == null) {
             savedInstanceState.putString(KEY_CURR_PATH, DEFAULT_PATH);
         } else {
             savedInstanceState.putString(KEY_CURR_PATH, mParentDir.getPath());
@@ -151,109 +160,72 @@ public class FileManagerActivity extends AppCompatActivity {
     }
 
 
-    private void showFileList(String path){
-        ArrayList<File> fileList;
+    private void showFileList(String path) {
+        ArrayList<File> fileList = new ArrayList<>();
         ActionBar abar = getSupportActionBar();
         FileManagerAdapter adapter;
 
-        if(path.equals(DEFAULT_PATH)){
+        if (path.equals(DEFAULT_PATH)) {
             mChosenDevice = null;
-            if(abar != null){
+            if (abar != null) {
                 String st = getString(R.string.fm_subtitle_choose_device);
                 abar.setSubtitle(st);
             }
 
             String def_path = Environment.getExternalStorageDirectory().getPath();
-            fileList = new ArrayList<>();
 
             fileList.add(new File(def_path)); // добавляем внутренние хранилище
-            fileList.addAll(getListFiles(new File(STORAGE_PATH), false)); // и не пустые из /storage
+
+            Set<File> files = StorageHelper.getSetFiles(new File(STORAGE_PATH), false); // и не пустые из /storage
+            if (files != null) fileList.addAll(files);
 
             int maxLength = getResources().getInteger(R.integer.fm_max_name_length);
-            adapter = new FileManagerAdapter(fileList, getLayoutInflater(), false, maxLength);
+            adapter = new FileManagerAdapter(fileList, getLayoutInflater(),
+                    FileManagerAdapter.SHOW_NOTHING, maxLength);
 
         } else {
             Log.d(TAG, "Moving to " + path);
             mParentDir = new File(path);
 
-            if(mChosenDevice == null){ // когда выбрали какое-то усройство
+            if (mChosenDevice == null) { // когда выбрали какое-то усройство
                 mChosenDevice = mParentDir;
                 showFab();
             }
 
             //устанавливаем путь до текущей дирректории в субтайтл
-            if(abar != null) abar.setSubtitle(path);
+            if (abar != null) {
+                int lengthSubtitle = getResources().getInteger(R.integer.fm_max_length_subtitle);
+                String subtitle = path;
+                if (path.length() > lengthSubtitle){
+                    subtitle = subtitle.substring(subtitle.length() - lengthSubtitle);
+                    subtitle = "..." + subtitle;
+                }
+                abar.setSubtitle(subtitle);
+                Log.d(TAG, "path: " + path.length() + "; subt: " + subtitle.length() + "; ls: " + lengthSubtitle);
+            }
 
-            fileList = getListFiles(mParentDir, true); //получаем список файлов
+            Set<File> files = StorageHelper.getSetFiles(mParentDir, true); //получаем список файлов
+            if (files != null) fileList.addAll(files);
 
-            fileList = sortFileList(fileList); // сортируем: сначала папки, потом файлы
+
+            fileList = StorageHelper.sortFileList(fileList); // сортируем: сначала папки, потом файлы
             int maxLength = getResources().getInteger(R.integer.fm_max_name_length);
-            adapter = new FileManagerAdapter(fileList, getLayoutInflater(), true, maxLength);
+            adapter = new FileManagerAdapter(fileList, getLayoutInflater(),
+                    FileManagerAdapter.SHOW_BACK, maxLength);
         }
 
         mFileListView.setAdapter(adapter);
     }
 
-    //Сортирует список файлов по алфавиту, устанавливая сначала папки, потом файлы
-    private ArrayList<File> sortFileList(ArrayList<File> fileList){
-        int lastDirIndex = 0;
 
-        if(fileList == null){
-            return null;
-        }
-
-        Collections.sort(fileList, new Comparator<File>() {
-            @Override
-            public int compare(File file, File t1) {
-                return file.getName().compareToIgnoreCase(t1.getName());
-            }
-        });
-
-        if(fileList == null){
-            return null;
-        }
-
-        for(int i = 0; i < fileList.size(); i++){
-            if(fileList.get(i).isDirectory()){
-                fileList.add(lastDirIndex++, fileList.get(i));
-                fileList.remove(i + 1);
-            }
-        }
-        return fileList;
-    }
-
-
-    private ArrayList<File> getListFiles(File dir, boolean withEmpty) {
-        if(dir == null || dir.listFiles() == null){
-            Log.d(TAG, "Empty directory");
-            return null;
-        }
-
-        ArrayList<File> files = new ArrayList<File>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()){
-                if(withEmpty){
-                    files.add(file);
-                } else {
-                    if(file.listFiles() != null){
-                        files.add(file);
-                    }
-                }
-            }
-            else
-                files.add(file);
-        }
-        return files;
-    }
-
-    private void showImportAlertDialog(){
+    private void showImportDirAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         final LinearLayout view = new LinearLayout(this);
-        getLayoutInflater().inflate(R.layout.fm_alert_dialog, view);
+        getLayoutInflater().inflate(R.layout.fm_alert_dialog_dir, view);
 
         //Выводит сообщение в алерт
-        String mess = getString(R.string.fm_alert_description);
+        String mess = getString(R.string.fm_alert_dir_description);
         ((TextView) view.findViewById(R.id.fm_dialog_desc))
                 .setText(String.format(mess, mParentDir.getName()));
 
@@ -262,13 +234,13 @@ public class FileManagerActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean withInner = ((CheckBox)view.findViewById(R.id.fm_dialog_cb)).isChecked();
+                        boolean withInner = ((CheckBox) view.findViewById(R.id.fm_dialog_cb)).isChecked();
 
                         Intent intent = new Intent();
                         intent.putExtra(KEY_STRING, mParentDir.getPath());
                         intent.putExtra(KEY_WITH_INNER, withInner);
 
-                        setResult(GET_PATH_OK, intent);
+                        setResult(GET_PATH_DIR, intent);
                         finish();
                     }
                 })
@@ -277,21 +249,53 @@ public class FileManagerActivity extends AppCompatActivity {
 
     }
 
-    private void showFab(){
+    private void showImportFileAlertDialog(final File file) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final LinearLayout view = new LinearLayout(this);
+        getLayoutInflater().inflate(R.layout.fm_alert_dialog_file, view);
+
+        //Выводит сообщение в алерт
+        String mess = getString(R.string.fm_alert_file_description);
+        ((TextView) view.findViewById(R.id.fm_dialog_desc))
+                .setText(String.format(mess, file.getName()));
+
+        builder.setTitle(R.string.fm_alert_title)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent();
+                        intent.putExtra(KEY_STRING, file.getPath());
+
+                        setResult(GET_PATH_FILE, intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+
+    }
+
+
+
+    private void showFab() {
         mFab.setScaleX(0);
         mFab.setScaleY(0);
         mFab.setVisibility(View.VISIBLE);
         mFab.animate().scaleX(1).scaleY(1).setDuration(100).start();
     }
 
-    private void hideFab(){
+    private void hideFab() {
         mFab.animate().scaleX(0).scaleY(0).setDuration(100).start();
         mFab.animate().setListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animator) {}
+            public void onAnimationStart(Animator animator) {
+            }
 
             @Override
-            public void onAnimationEnd(Animator animator) {}
+            public void onAnimationEnd(Animator animator) {
+            }
 
             @Override
             public void onAnimationCancel(Animator animator) {
@@ -299,7 +303,8 @@ public class FileManagerActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animator animator) {}
+            public void onAnimationRepeat(Animator animator) {
+            }
         });
     }
 
