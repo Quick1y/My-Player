@@ -1,14 +1,10 @@
-package com.example.nikita.myplayer.UI;
+package com.example.nikita.myplayer.Utils;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.example.nikita.myplayer.R;
-
-import java.util.ArrayList;
 
 /**
  * Created by nikita on 24.07.17.

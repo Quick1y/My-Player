@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Lectoo Player</string>
+    <string name="preferences">preference</string>
+    <string name="preferences_sources">preference_sources_set</string>
+
 
     <!-- FileManager -->
     <string name="file_manager_label">Импорт треков</string>
@@ -19,6 +22,13 @@
     <string name="fm_alert_cb_with_inner">Включая вложенные папки</string>
 
 
+    <!-- HomeActivity -->
+    <string-array name="ha_menu_item">
+        <item>Настройки</item>
+        <item>Invisible item</item>
+    </string-array>
+
+
     <!-- TrackListActivity -->
     <string name="tl_need_permission">Для работы приложения необходимо предоставить разрешение
         на использование памяти.</string>
@@ -30,6 +40,22 @@
     <string name="wf_import_button">Импортировать</string>
 
     <!-- PlayerFragment -->
+
+
+    <!-- Settings -->
+    <string name="sa_activity_label">Настройки</string>
+
+    <!-- SettingsMainFragment -->
+    <string name="fsm_import_title">Импорт</string>
+    <string name="fsm_import_desc">Укажите папки с аудиофайлами</string>
+
+    <string name="fsm_about_title">О программе</string>
+    <string name="fsm_about_desc">Версия: %s</string>
+
+    <!-- SettingsImportFragment -->
+    <string name="fsi_source_text">Источники аудиофайлов:</string>
+    <string name="fsi_list_is_empty">Список пуст</string>
+
 
 
 </resources>

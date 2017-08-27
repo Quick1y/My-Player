@@ -12,18 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CommonTheme">
-
-        <activity android:name=".UI.HomeActivity"
+        <activity
+            android:name=".UI.Home.HomeActivity"
             android:theme="@style/CommonThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".UI.FileManagerActivity"
-            android:label="@string/file_manager_label"/>
+        <activity
+            android:name=".UI.FileManagerActivity"
+            android:label="@string/file_manager_label" />
 
+        <activity
+            android:name=".UI.Settings.SettingsActivity"
+            android:label="@string/sa_activity_label"></activity>
     </application>
 
 </manifest>

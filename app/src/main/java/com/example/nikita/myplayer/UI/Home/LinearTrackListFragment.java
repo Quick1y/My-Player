@@ -1,30 +1,26 @@
-package com.example.nikita.myplayer.UI;
+package com.example.nikita.myplayer.UI.Home;
 
 
 import android.app.Fragment;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nikita.myplayer.Database.TrackDataBase;
 import com.example.nikita.myplayer.Model.Track;
 import com.example.nikita.myplayer.R;
+import com.example.nikita.myplayer.UI.Settings.SettingsActivity;
+import com.example.nikita.myplayer.Utils.MySpinnerAdapter;
 
-import java.util.List;
 import java.util.Locale;
 
 
@@ -56,8 +52,8 @@ public class LinearTrackListFragment extends Fragment {
         mTrackRecyclerView = (RecyclerView) view.findViewById(R.id.fltl_recycler_view);
         mTrackRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //////////
-        final String[] data = {"Настройки", "Вид", "invisible"};
+        //ActionBar menu
+        final String[] data = getResources().getStringArray(R.array.ha_menu_item);
 
         MySpinnerAdapter adapter = new MySpinnerAdapter(data, getActivity().getLayoutInflater());
         final Spinner spinner = (Spinner) view.findViewById(R.id.ab_spinner);
@@ -66,8 +62,14 @@ public class LinearTrackListFragment extends Fragment {
             boolean firstStart = true;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!firstStart){
-                    Toast.makeText(getActivity(), "click on " + i, Toast.LENGTH_SHORT).show();
+                if(!firstStart){ // ignore first click (from system)
+
+                    switch (i) {
+                        case 0:
+                            Intent intent = SettingsActivity.getIntent(getActivity());
+                            startActivity(intent);
+                    }
+
                 } else {
                     firstStart = false;
                 }
@@ -81,9 +83,9 @@ public class LinearTrackListFragment extends Fragment {
 
             }
         });
+        // /ActionBar menu
 
 
-///////
 
         updateUI();
 

@@ -1,6 +1,7 @@
 package com.example.nikita.myplayer.UI;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
@@ -51,6 +52,11 @@ public class FileManagerActivity extends AppCompatActivity {
 
 
     private ListView mFileListView;
+
+    public static Intent getIntent(Context context){
+        Intent intent = new Intent(context, FileManagerActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package com.example.nikita.myplayer.UI;
+package com.example.nikita.myplayer.UI.Home;
 
 
 import android.app.Fragment;
@@ -10,13 +10,8 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.example.nikita.myplayer.Database.TrackDataBase;
@@ -89,7 +84,6 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-
     }
 
 
@@ -133,7 +127,6 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             fragment = new WelcomeFragment();
             mFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.animator.fragment_alpha_show, R.animator.player_close)
                     .add(R.id.frame_list_act_track_list, fragment)
                     .commit();
         }
@@ -160,7 +153,6 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             fragment = new LinearTrackListFragment();
             mFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.animator.fragment_alpha_show, R.animator.player_close)
                     .add(R.id.frame_list_act_track_list, fragment)
                     .commit();
         }
@@ -189,14 +181,11 @@ public class HomeActivity extends AppCompatActivity {
                     .setCustomAnimations(R.animator.player_open, R.animator.fragment_alpha_hide)
                     .replace(R.id.frame_list_act_track_list, fragment)
                     .commit();
-            Log.d(TAG, "fragment is not null: " + fragment.getClass());
         } else {
             fragment = PlayerFragment.newInstance(tracklId);
             mFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.animator.player_open, R.animator.fragment_alpha_hide)
                     .add(R.id.frame_list_act_track_list, fragment)
                     .commit();
-            Log.d(TAG, "fragment is null");
         }
     }
 }

@@ -68,7 +68,7 @@ public class FileManagerAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         //тут нужно делать View Holder
-        view = mInflater.inflate(R.layout.file_manager_list_view, viewGroup, false);
+        view = mInflater.inflate(R.layout.file_manager_item, viewGroup, false);
 
         TextView name = (TextView) view.findViewById(R.id.fm_listview_track_name);
         ImageView image = (ImageView) view.findViewById(R.id.fm_listview_image);

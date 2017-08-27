@@ -1,13 +1,20 @@
 package com.example.nikita.myplayer.Utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.ListAdapter;
+
+import com.example.nikita.myplayer.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +24,7 @@ import java.util.Set;
 
 public class StorageHelper {
     private static final String TAG = "StorageHelper";
+    public static final String PREF_SOURCES_SPLIT = ":{withInner}:";
 
     //Сортирует список файлов по алфавиту, устанавливая сначала папки, потом файлы
     public static ArrayList<File> sortFileList(ArrayList<File> fileList) {

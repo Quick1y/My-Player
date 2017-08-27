@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.example.nikita.myplayer.UI.PlayerFragment">
+    tools:context="com.example.nikita.myplayer.UI.Home.PlayerFragment">
 
 
     <ImageView

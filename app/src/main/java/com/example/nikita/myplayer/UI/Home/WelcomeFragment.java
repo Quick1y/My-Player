@@ -1,4 +1,4 @@
-package com.example.nikita.myplayer.UI;
+package com.example.nikita.myplayer.UI.Home;
 
 
 import android.content.Intent;
@@ -9,17 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nikita.myplayer.Database.TrackDataBase;
 import com.example.nikita.myplayer.R;
+import com.example.nikita.myplayer.UI.FileManagerActivity;
+import com.example.nikita.myplayer.UI.Settings.SettingsActivity;
 import com.example.nikita.myplayer.Utils.Importer;
-
-import java.io.File;
+import com.example.nikita.myplayer.Utils.MySpinnerAdapter;
 
 public class WelcomeFragment extends Fragment {
     private static final String TAG = "WelcomeFragment";
@@ -33,15 +32,15 @@ public class WelcomeFragment extends Fragment {
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), FileManagerActivity.class);
+                Intent intent = FileManagerActivity.getIntent(getActivity());
                 startActivityForResult(intent, FileManagerActivity.GET_PATH);
             }
         });
 
 
 
-        //////////
-        final String[] data = {"Настройки", "Вид", "invisible"};
+        //ActionBar menu
+        final String[] data = getResources().getStringArray(R.array.ha_menu_item);
 
         MySpinnerAdapter adapter = new MySpinnerAdapter(data, getActivity().getLayoutInflater());
         final Spinner spinner = (Spinner) view.findViewById(R.id.ab_spinner);
@@ -50,14 +49,20 @@ public class WelcomeFragment extends Fragment {
             boolean firstStart = true;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(!firstStart){
-                    Toast.makeText(getActivity(), "click on " + i, Toast.LENGTH_SHORT).show();
+                if(!firstStart){ // ignore first click (from system)
+
+                    switch (i) {
+                        case 0:
+                            Intent intent = SettingsActivity.getIntent(getActivity());
+                            startActivity(intent);
+                    }
+
                 } else {
                     firstStart = false;
                 }
                 ((TextView) view).setText("");
-                spinner.setSelection(data.length-1);// это костыль, чтобы спиннер работал как меню.
-                                                    // Подробнее в getCount() MySpinnerAdapter
+                spinner.setSelection(data.length-1); // это костыль, чтобы спиннер работал как меню.
+                // Подробнее в getCount() MySpinnerAdapter
             }
 
             @Override
@@ -65,9 +70,7 @@ public class WelcomeFragment extends Fragment {
 
             }
         });
-
-
-///////
+        // /ActionBar menu
 
 
 

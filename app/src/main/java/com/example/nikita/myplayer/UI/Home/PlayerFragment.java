@@ -1,8 +1,6 @@
-package com.example.nikita.myplayer.UI;
+package com.example.nikita.myplayer.UI.Home;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -24,7 +22,6 @@ import com.example.nikita.myplayer.Model.PlayerNotCreateException;
 import com.example.nikita.myplayer.Model.Track;
 import com.example.nikita.myplayer.R;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
