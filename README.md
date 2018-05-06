@@ -1,4 +1,4 @@
 # My-Player
 
-My little project to learning android programming
-
+Первый проект, который заглох, не успев начаться((
+Когда-нибудь я его допилю.
